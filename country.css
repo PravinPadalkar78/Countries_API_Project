@@ -71,5 +71,8 @@
         width: 100%;
         max-width: 400px;
     }
+    .country-details-container{
+        padding-inline: 1rem;
+    }
 
 }
