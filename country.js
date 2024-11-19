@@ -11,6 +11,7 @@ const currencies = document.querySelector(".currencies");
 const languages = document.querySelector(".languages");
 const borderCountries = document.querySelector(".border-countries");
 const themeChanger = document.querySelector('.theme-changer');
+const themeIcon = document.querySelector('.theme-changer i');
 
 
 fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
@@ -63,5 +64,16 @@ fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
 
   themeChanger.addEventListener('click',(e)=>{
     document.body.classList.toggle('dark');
-    console.log('cliked')
+    
+    if(themeChanger.innerHTML!=`<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`)
+    {
+      themeChanger.innerHTML=`<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`
+    }
+    else{
+      themeChanger.innerHTML=`<i class="fa-solid fa-moon"></i>&nbsp;&nbsp;Dark Mode`
+    }
+    themeIcon.classList.toggle('fa-moon');
+    themeIcon.classList.toggle('fa-sun');
+    console.log(themeIcon)
+    
   })
