@@ -11,7 +11,6 @@ const currencies = document.querySelector(".currencies");
 const languages = document.querySelector(".languages");
 const borderCountries = document.querySelector(".border-countries");
 const themeChanger = document.querySelector('.theme-changer');
-const themeIcon = document.querySelector('.theme-changer i');
 
 
 fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
@@ -61,19 +60,31 @@ fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
       });
     }
   });
-
-  themeChanger.addEventListener('click',(e)=>{
-    document.body.classList.toggle('dark');
+  let isDark;
+  if(JSON.parse(localStorage.isDarkMode)==true){
+    isDark=true;
+    console.log('hi im true')
+    document.body.classList.add("dark")
+    themeChanger.innerHTML = `<i class="fa-solid fa-${isDark? 'sun':'moon'}"></i>&nbsp;&nbsp;${isDark? 'Light':'Dark'} Mode`;  
+  }
+  else{
+    isDark=false;
+    document.body.classList.remove("dark");
+    themeChanger.innerHTML = `<i class="fa-solid fa-${isDark? 'sun':'moon'}"></i>&nbsp;&nbsp;${isDark? 'Light':'Dark'} Mode`;  
+  }
     
-    if(themeChanger.innerHTML!=`<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`)
+  themeChanger.addEventListener("click",(e)=>{
+    let isDark;
+    if(JSON.parse(localStorage.getItem('isDarkMode')))
     {
-      themeChanger.innerHTML=`<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`
+        isDark=true;
+        document.body.classList.remove("dark")
     }
     else{
-      themeChanger.innerHTML=`<i class="fa-solid fa-moon"></i>&nbsp;&nbsp;Dark Mode`
+      isDark=false;
+      document.body.classList.add("dark");
     }
-    themeIcon.classList.toggle('fa-moon');
-    themeIcon.classList.toggle('fa-sun');
-    console.log(themeIcon)
-    
+    themeChanger.innerHTML = `<i class="fa-solid fa-${isDark? 'sun':'moon'}"></i>&nbsp;&nbsp;${isDark? 'Light':'Dark'} Mode`;  
+    localStorage.isDarkMode=!isDark;
   })
+  

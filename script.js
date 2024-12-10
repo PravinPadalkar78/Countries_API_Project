@@ -1,11 +1,11 @@
 const countryContainer = document.querySelector(".countires-container");
 const select = document.querySelector("select");
-const inputText = document.querySelector('.search-container input');
-const themeChanger = document.querySelector('.theme-changer');
-const themeIcon = document.querySelector('.theme-changer i');
-let AllCountriesData = ''
+const inputText = document.querySelector(".search-container input");
+const themeChanger = document.querySelector(".theme-changer");
+const themeIcon = document.querySelector(".theme-changer i");
+let AllCountriesData = "";
 function renderCountries(data) {
-  countryContainer.innerHTML = ""; 
+  countryContainer.innerHTML = "";
   data.forEach((country) => {
     const card = document.createElement("a");
     card.classList.add("country-card");
@@ -27,37 +27,60 @@ function renderCountries(data) {
 
 fetch("https://restcountries.com/v3.1/all")
   .then((res) => res.json())
-  .then((data)=>{
-     AllCountriesData = data;
+  .then((data) => {
+    AllCountriesData = data;
     renderCountries(data);
   });
 
 select.addEventListener("change", () => {
   console.log(select.value);
-  
+
   fetch(`https://restcountries.com/v3.1/region/${select.value}`)
     .then((res) => res.json())
     .then(renderCountries);
 });
 
-inputText.addEventListener('input',(e)=>{
+inputText.addEventListener("input", (e) => {
   console.log(e.target.value);
-  let FilterdData =  AllCountriesData.filter((country)=>country.name.common.toLowerCase().includes(e.target.value.toLowerCase()))
-  renderCountries(FilterdData)
-})
+  let FilterdData = AllCountriesData.filter((country) =>
+    country.name.common.toLowerCase().includes(e.target.value.toLowerCase())
+  );
+  renderCountries(FilterdData);
+});
 
-themeChanger.addEventListener('click',(e)=>{
-  document.body.classList.toggle('dark');
+// if (localStorage.getItem("theme") == undefined) {
+//   localStorage.setItem("theme", "light");
+// }
+// themeChanger.addEventListener("click", (e) => {
+//   if (localStorage.getItem("theme") == "light") {
+//     themeChanger.innerHTML = `<i class="fa-solid fa-moon"></i>&nbsp;&nbsp;Dark Mode`;
+//     localStorage.theme = "dark";
+//     document.body.classList.remove("dark");
+//   } else {
+//     themeChanger.innerHTML = `<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`;
+//     localStorage.theme = "light";
+//     document.body.classList.add("dark");
+//   }
+
+//   console.log(themeIcon);
+// });
+if(localStorage.isDarkMode ==null){
+  localStorage.setItem('isDarkMode',false)
+}
   
-  if(themeChanger.innerHTML!=`<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`)
+themeChanger.addEventListener("click",(e)=>{
+  let isDark;
+  if(JSON.parse(localStorage.getItem('isDarkMode'))==true)
   {
-    themeChanger.innerHTML=`<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`
+    localStorage.isDarkMode=false;
+      isDark=false;
+      document.body.classList.remove("dark")
   }
   else{
-    themeChanger.innerHTML=`<i class="fa-solid fa-moon"></i>&nbsp;&nbsp;Dark Mode`
+    localStorage.isDarkMode=true;
+    isDark=true;
+    document.body.classList.add("dark");
   }
-  themeIcon.classList.toggle('fa-moon');
-  themeIcon.classList.toggle('fa-sun');
-  console.log(themeIcon)
+  themeChanger.innerHTML = `<i class="fa-solid fa-${isDark? 'sun':'moon'}"></i>&nbsp;&nbsp;${isDark? 'Light':'Dark'} Mode`;  
   
 })
